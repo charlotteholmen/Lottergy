@@ -13,10 +13,12 @@
 
 ## pages.yml
 
-- **Triggers:** push to `main` touching `data/**` (or the workflow itself) + `workflow_dispatch`.
+- **Triggers:** push to `main` touching `apps/lottergy/**`, `packages/**`, `data/**`, the workflow itself, or `pnpm-lock.yaml` + `workflow_dispatch`.
 - **Permissions:** `contents: read`, `pages: write`, `id-token: write`.
-- **Steps:** checkout → `configure-pages` → `upload-pages-artifact path: data` → `deploy-pages`.
-- **Result:** `data/v1/<game>.json` → `https://thebitmaptoshi.github.io/Lottergy/v1/<game>.json`.
+- **Steps:** checkout → pnpm 11.2.2 → Node 22 → `pnpm install --frozen-lockfile` → `expo export --platform web` (output: `apps/lottergy/dist/`) → copy `data/v1/*.json` into `apps/lottergy/dist/v1/` → `upload-pages-artifact` (the merged tree) → `deploy-pages`.
+- **Result URLs:**
+  - `https://thebitmaptoshi.github.io/Lottergy/` → the Expo Web app
+  - `https://thebitmaptoshi.github.io/Lottergy/v1/<game>.json` → data (locked contract)
 
 ## Key invariants
 

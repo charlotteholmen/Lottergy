@@ -1,16 +1,24 @@
-name: Deploy data to Pages
+name: Deploy app + data to Pages
 
-# Publishes the contents of `data/` as the GitHub Pages site so that
-# `data/v1/<game>.json` becomes `https://thebitmaptoshi.github.io/Lottergy/v1/<game>.json`.
+# Publishes a single Pages artifact containing:
+#   1. the built Expo Web app (from `apps/lottergy/dist/`) at the site root
+#   2. the data JSON files at `/v1/<game>.json` (copied from `data/v1/`)
 #
-# REQUIRES: Repo Settings → Pages → Source = "GitHub Actions" (not "Deploy from a branch").
+# Result URLs:
+#   https://thebitmaptoshi.github.io/Lottergy/            -> the app
+#   https://thebitmaptoshi.github.io/Lottergy/v1/<game>.json -> data (locked URL)
+#
+# REQUIRES: Repo Settings -> Pages -> Source = "GitHub Actions".
 
 on:
   push:
     branches: [main]
     paths:
+      - "apps/lottergy/**"
+      - "packages/**"
       - "data/**"
       - ".github/workflows/pages.yml"
+      - "pnpm-lock.yaml"
   workflow_dispatch: {}
 
 permissions:
@@ -23,7 +31,7 @@ concurrency:
   cancel-in-progress: false
 
 jobs:
-  deploy:
+  build-and-deploy:
     environment:
       name: github-pages
       url: ${{ steps.deployment.outputs.page_url }}
@@ -31,11 +39,31 @@ jobs:
     steps:
       - uses: actions/checkout@v4
 
+      - uses: pnpm/action-setup@v4
+        with:
+          version: 11.2.2
+
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 22
+          cache: pnpm
+
+      - run: pnpm install --frozen-lockfile
+
+      - name: Build web bundle
+        working-directory: apps/lottergy
+        run: pnpm exec expo export --platform web
+
+      - name: Stage data into web bundle
+        run: |
+          mkdir -p apps/lottergy/dist/v1
+          cp -v data/v1/*.json apps/lottergy/dist/v1/
+
       - uses: actions/configure-pages@v5
 
       - uses: actions/upload-pages-artifact@v3
         with:
-          path: data
+          path: apps/lottergy/dist
 
       - id: deployment
         uses: actions/deploy-pages@v4

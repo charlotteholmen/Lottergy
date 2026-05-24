@@ -1,16 +1,21 @@
 {
   "expo": {
-    "name": "lottergy",
+    "name": "Lottergy",
     "slug": "lottergy",
     "version": "1.0.0",
     "orientation": "portrait",
     "icon": "./assets/images/icon.png",
     "scheme": "lottergy",
     "userInterfaceStyle": "automatic",
+    "description": "What's Your Lottergy to Win? Browse lottery historical data, run your own filters and Monte Carlo simulations, and save named strategies.",
+    "primaryColor": "#208AEF",
     "ios": {
-      "icon": "./assets/expo.icon"
+      "icon": "./assets/expo.icon",
+      "bundleIdentifier": "com.thebitmaptoshi.lottergy",
+      "supportsTablet": true
     },
     "android": {
+      "package": "com.thebitmaptoshi.lottergy",
       "adaptiveIcon": {
         "backgroundColor": "#E6F4FE",
         "foregroundImage": "./assets/images/android-icon-foreground.png",
@@ -21,7 +26,13 @@
     },
     "web": {
       "output": "static",
-      "favicon": "./assets/images/favicon.png"
+      "favicon": "./assets/images/favicon.png",
+      "name": "Lottergy",
+      "shortName": "Lottergy",
+      "themeColor": "#208AEF",
+      "backgroundColor": "#ffffff",
+      "display": "standalone",
+      "orientation": "any"
     },
     "plugins": [
       "expo-router",
