@@ -27,7 +27,7 @@ Auto-loaded docs (CLAUDE / CONTEXT / REFERENCE) are imported via CLAUDE.md's `@`
 
 ## Packages
 
-- [packages/core](file-summaries/packages/core.md) — game-agnostic logic: pool, constraints, samplers, Monte Carlo, strategy. TS port of `powerball-legacy/`.
+- [packages/core](file-summaries/packages/core.md) — game-agnostic logic: 12 modules (frequency, pool, constraints, sampler, generator, top-picks, Monte Carlo kernel + Worker, strategy, scale, rng). 48 vitest tests, all passing.
 - [packages/games](file-summaries/packages/games.md) — per-game data only (matrix, eras, data URL, default preset, info copy). No logic.
 - [packages/ui](file-summaries/packages/ui.md) — shared cross-platform UI primitives (info bubble, controls, `ResultsVisualizer`).
 
