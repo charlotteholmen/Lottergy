@@ -1,0 +1,64 @@
+name: Scrape draws
+
+on:
+  schedule:
+    - cron: "0 9 * * *" # daily 09:00 UTC (after most US lottery draws settle)
+  workflow_dispatch: {}
+
+concurrency:
+  group: scrape
+  cancel-in-progress: true
+
+permissions:
+  contents: write
+
+jobs:
+  scrape:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: pnpm/action-setup@v4
+        with:
+          version: 11.2.2
+
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 22
+          cache: pnpm
+
+      - run: pnpm install --frozen-lockfile
+
+      - name: Scrape Powerball
+        run: pnpm --filter @lottergy/scraper scrape:powerball
+
+      - name: Scrape Mega Millions
+        run: pnpm --filter @lottergy/scraper scrape:megamillions
+
+      - name: Commit refreshed data (one commit per game)
+        run: |
+          set -e
+          DATE=$(date -u +%Y-%m-%d)
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+
+          if ! git diff --quiet -- data/v1/powerball.json; then
+            git add data/v1/powerball.json
+            git commit -m "data: refresh powerball ($DATE)"
+          else
+            echo "Powerball: no changes."
+          fi
+
+          if ! git diff --quiet -- data/v1/megamillions.json; then
+            git add data/v1/megamillions.json
+            git commit -m "data: refresh megamillions ($DATE)"
+          else
+            echo "Mega Millions: no changes."
+          fi
+
+          # Only push if we made at least one commit on top of origin/main
+          if [ "$(git rev-list --count origin/${GITHUB_REF_NAME}..HEAD)" -gt 0 ]; then
+            git push
+          else
+            echo "No commits to push."
+          fi

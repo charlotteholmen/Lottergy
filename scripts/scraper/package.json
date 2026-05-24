@@ -1,0 +1,15 @@
+{
+  "name": "@lottergy/scraper",
+  "private": true,
+  "type": "module",
+  "scripts": {
+    "scrape:powerball": "tsx powerball.ts",
+    "scrape:megamillions": "tsx megamillions.ts",
+    "scrape:all": "pnpm run scrape:powerball && pnpm run scrape:megamillions"
+  },
+  "devDependencies": {
+    "@types/node": "^22.7.0",
+    "tsx": "^4.19.0",
+    "typescript": "^5.4.0"
+  }
+}

@@ -31,6 +31,18 @@ Auto-loaded docs (CLAUDE / CONTEXT / REFERENCE) are imported via CLAUDE.md's `@`
 - [packages/games](file-summaries/packages/games.md) — per-game data only (matrix, eras, data URL, default preset, info copy). No logic.
 - [packages/ui](file-summaries/packages/ui.md) — shared cross-platform UI primitives (info bubble, controls, `ResultsVisualizer`).
 
+## Scripts
+
+- [scripts/scraper](file-summaries/scripts/scraper.md) — TS scrapers (Powerball + Mega Millions) targeting NY State Open Data, emit `data/v1/<game>.json`.
+
+## Data
+
+- [data/v1/](file-summaries/data/v1.md) — versioned JSON contract: matrix + eras + draws per game. Served via GitHub Pages (Pages-from-Actions).
+
+## CI
+
+- [.github/workflows](file-summaries/.github/workflows.md) — nightly scrape + Pages deploy.
+
 ## Legacy reference (`powerball-legacy/`)
 
 - [powerball_analysis.py](file-summaries/powerball-legacy/powerball_analysis.py.md) — fetches NY Open Data draws, emits frequency tables.
