@@ -1,6 +1,6 @@
 {
   "game": "megamillions",
-  "updated_at": "2026-06-02T10:30:25Z",
+  "updated_at": "2026-06-03T10:32:47Z",
   "matrix": {
     "whites_max": 70,
     "reds_max": 24,
@@ -27592,6 +27592,17 @@
         65
       ],
       "red": 7
+    },
+    {
+      "date": "2026-06-02",
+      "whites": [
+        15,
+        26,
+        43,
+        48,
+        60
+      ],
+      "red": 12
     }
   ]
 }
